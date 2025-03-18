@@ -8,10 +8,14 @@ public class EditorTest {
 	        // Testing Editor
 	        Editor editor = new Editor();
 	        System.out.println("Testing Editor:");
-	        editor.addText("Hello world");
-	        System.out.println("Text: " + editor);
+	        editor.append("Hello world");
+	        System.out.println(editor);
 	        editor.removeWord();
-	        System.out.println("After removing last word: " + editor);
+	        System.out.println("After removing last word " + editor);
+	        editor.append(" love life positivity lamp love freedom love peace");
+	        System.out.println("After appending " + editor);
+	        editor.removeWord("love");
+	        System.out.println("After removing all instances of \"love\" " + editor);
 	        System.out.println();
 
 	        // Testing SpellCheckEditor
@@ -27,8 +31,12 @@ public class EditorTest {
 	        // Testing TranslateEditor
 	        TranslateEditor translateEditor = new TranslateEditor("src/sourceDictionary.txt", "src/targetDictionary.txt");
 	        System.out.println("Testing TranslateEditor:");
-	        System.out.println("Translation of 'hello': " + translateEditor.translate("hello"));
-	        System.out.println("Translation of 'world': " + translateEditor.translate("world"));
+	        System.out.println("Translation of 'hello': " + translateEditor.translateWord("hello"));
+	        System.out.println("Translation of 'world': " + translateEditor.translateWord("world"));
+	        translateEditor.append("hello world love peace freedom lamp");
+	        System.out.println("Before translation:\n" + translateEditor);
+	        translateEditor.translateString();
+	        System.out.println("After translation:\n" + translateEditor);
 	        
 	        System.out.println();
 	    }

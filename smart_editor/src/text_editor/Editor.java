@@ -5,17 +5,17 @@ public class Editor {
 
     private static final int MAX_TEXT_LENGTH = 1000;
 
-    private final StringBuilder text;
+    protected StringBuilder text;
 
     public Editor() {
         this.text = new StringBuilder();
     }
 
-    public final void addText(char character) {
+    public final void addChar(char character) {
         text.append(character);
     }
 
-    public final void addText(String string) {
+    public final void append(String string) {
         text.append(string);
     }
 
@@ -36,6 +36,27 @@ public class Editor {
             }
         }
     }
+    
+    public void removeWord(String word) {
+        String textStr = text.toString();
+        int index = textStr.lastIndexOf(word);
+
+        while (index != -1) {
+            boolean isWordBoundaryBefore = (index == 0 || Character.isWhitespace(textStr.charAt(index - 1)));
+            boolean isWordBoundaryAfter = (index + word.length() == textStr.length() || Character.isWhitespace(textStr.charAt(index + word.length())));
+
+            if (isWordBoundaryBefore && isWordBoundaryAfter) {
+                text.delete(index, index + word.length());
+
+                if (index > 0 && index < text.length() && text.charAt(index) == ' ') {
+                    text.deleteCharAt(index);
+                }
+            }
+            
+            textStr = text.toString();
+            index = textStr.lastIndexOf(word);
+        }
+    }
 
 
     public final int getTextLength() {
@@ -49,24 +70,6 @@ public class Editor {
     @Override
     public String toString() {
         return text.toString();
-    }
-    
-    public void removeWord(String word) {
-        String textStr = text.toString();
-        int index = textStr.lastIndexOf(word);
-
-        if (index != -1) {
-            boolean isWordBoundaryBefore = (index == 0 || Character.isWhitespace(textStr.charAt(index - 1)));
-            boolean isWordBoundaryAfter = (index + word.length() == textStr.length() || Character.isWhitespace(textStr.charAt(index + word.length())));
-
-            if (isWordBoundaryBefore && isWordBoundaryAfter) {
-                text.delete(index, index + word.length());
-
-                if (index > 0 && index < text.length() && text.charAt(index) == ' ') {
-                    text.deleteCharAt(index);
-                }
-            }
-        }
     }
 
 }

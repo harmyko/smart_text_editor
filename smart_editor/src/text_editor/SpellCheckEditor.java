@@ -49,9 +49,13 @@ public class SpellCheckEditor extends Editor {
 	        return dictionary.contains(word.toLowerCase());
 	    }
 	    
+	    public String info() {
+	    	return "SpellCheckEditor [dictionary=" + dictionary + "]";
+	    }
+	    
 	    @Override
 	    public String toString() {
-	    	return "Spellchecker [dictionary=" + dictionary + "]";
+	    	return "SpellCheckEditor: " + text.toString();
 	    }
 		
 }

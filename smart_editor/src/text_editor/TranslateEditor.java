@@ -43,27 +43,49 @@ public class TranslateEditor extends Editor {
 		translationMap = map;
 	}
 	
-	public String translate(String sourceWord) {
+	public String translateWord(String sourceWord) {
 	    String translatedWord = translationMap.get(sourceWord);
 	    
 	    if (translatedWord == null) {
-	    	return "No translation found for" + sourceWord + ".";
+	    	return " [No translation found for " + sourceWord + "] ";
 	    }
 	    
 	    return translatedWord;
 	}
 	
-	@Override
-	public void removeWord(String word) {
+	public void translateString() {
+	    StringBuilder translatedString = new StringBuilder();
+	    String[] words = text.toString().split("\\s+");
+
+	    for (int i = 0; i < words.length; i++) {
+	        translatedString.append(translateWord(words[i]));
+	        if (i < words.length - 1) {
+	            translatedString.append(" ");
+	        }
+	    }
+
+	    text = translatedString;
+	}
+	
+	public void removeTranslation(String word) {
 		if (translationMap.containsKey(word)) {
-			removeWord(translationMap.get(word));
+			translationMap.remove(translationMap.get(word));
 			translationMap.remove(word);
-			super.removeWord(word);
 		}
 	}
 	
-	@Override
-    public String toString() {
+    public String info() {
     	return "Translator [sourceDictionary=" + sourceDictionary + ", targetDictionary=" + targetDictionary + ".";
     }
+	
+	@Override
+	public void removeWord(String word) {
+		removeTranslation(word);
+		super.removeWord(word);
+	}
+	
+	@Override
+	public String toString() {
+		return "TranslateEditor: " + text.toString();
+	}
 }
