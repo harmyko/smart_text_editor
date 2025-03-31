@@ -84,11 +84,6 @@ public class EditorTest {
 	        System.out.println("After translation:\n" + translateEditor);
 	        System.out.println();
 
-	        // Polymorphisis
-	        Editor translateEditorRef = translateEditor;
-	        System.out.println(translateEditorRef.getInfo());
-	        System.out.println(translateEditor.getInfo());
-
 	        System.out.println();
 	    }
 }
