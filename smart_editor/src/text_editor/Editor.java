@@ -6,21 +6,26 @@ public class Editor {
     private static final int MAX_TEXT_LENGTH = 1000;
 
     protected StringBuilder text;
-
+    
     public Editor() {
-        this.text = new StringBuilder();
+        text = new StringBuilder();
     }
 
-    public final void addChar(char character) {
+    public Editor(String initialText) {
+        text = new StringBuilder();
+        text.append(initialText);
+    }
+
+    public final void addText(char character) {
         text.append(character);
     }
 
-    public final void append(String string) {
+    public final void addText(String string) {
         text.append(string);
     }
 
     public final void removeLastCharacter() {
-        if (text.length() < MAX_TEXT_LENGTH) {
+        if (text.length() > 0) {
             text.deleteCharAt(text.length() - 1);
         }
     }
@@ -35,6 +40,10 @@ public class Editor {
                 text.delete(lastSpaceIndex, text.length());
             }
         }
+    }
+    
+    public String getInfo() {
+    	return "Editor";
     }
     
     public void removeWord(String word) {
@@ -69,7 +78,7 @@ public class Editor {
     
     @Override
     public String toString() {
-        return text.toString();
+        return "Editor: " + text.toString();
     }
 
 }

@@ -1,56 +1,52 @@
 package text_editor;
 
-import java.io.*;
 import java.util.*;
 
 public class TranslateEditor extends Editor {
 	
-	private Set<String> sourceDictionary;
-	private Set<String> targetDictionary;
+	private ArrayList<String> sourceDictionary;
+	private ArrayList<String> targetDictionary;
 	private Map<String, String> translationMap;
 	
-	public TranslateEditor(String sourceFilename, String targetFilename) {
+	public TranslateEditor(ArrayList<String> sourceWords, ArrayList<String> targetWords) {
 		super();
-		sourceDictionary = openDictionaryFromFile(sourceFilename);
-		targetDictionary = openDictionaryFromFile(targetFilename);
+		sourceDictionary = sourceWords;
+		targetDictionary = targetWords;
 		createTranslationMap();
 	}
 	
-    private Set<String> openDictionaryFromFile(String filename) {
-        Set<String> words = new LinkedHashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                for (String word : line.split("\\s+")) {
-                    words.add(word.toLowerCase());
-                }
-            }
-        } catch (IOException e) {
-        	throw new IllegalArgumentException("Error reading dictionary file: " + filename, e);
-        }
-        return words;
-    }
+	public ArrayList<String> getSourceDictionary() {
+		return sourceDictionary;
+	}
+
+	public void setSourceDictionary(ArrayList<String> sourceDictionary) {
+		this.sourceDictionary = sourceDictionary;
+		createTranslationMap();
+	}
+
+	public ArrayList<String> getTargetDictionary() {
+		return targetDictionary;
+	}
+
+	public void setTargetDictionary(ArrayList<String> targetDictionary) {
+		this.targetDictionary = targetDictionary;
+		createTranslationMap();
+	}
     
 	private void createTranslationMap() {
-		Map<String, String> map = new HashMap<>();
-		List<String> sourceWords = new ArrayList<>(sourceDictionary);
-		List<String> targetWords = new ArrayList<>(targetDictionary);
-		
-		for (int i = 0; i < sourceWords.size(); i++) {
-			map.put(sourceWords.get(i), targetWords.get(i));
+		if (sourceDictionary.size() != targetDictionary.size()) {
+		    throw new IllegalArgumentException("Source and target dictionaries must have the same size.");
 		}
 		
-		translationMap = map;
+		translationMap = new LinkedHashMap<>();
+		
+		for (int i = 0; i < sourceDictionary.size(); i++) {
+			translationMap.put(sourceDictionary.get(i), targetDictionary.get(i));
+		}
 	}
 	
 	public String translateWord(String sourceWord) {
-	    String translatedWord = translationMap.get(sourceWord);
-	    
-	    if (translatedWord == null) {
-	    	return " [No translation found for " + sourceWord + "] ";
-	    }
-	    
-	    return translatedWord;
+	    return translationMap.getOrDefault(sourceWord, " [No translation found for " + sourceWord + "] ");
 	}
 	
 	public void translateString() {
@@ -68,14 +64,12 @@ public class TranslateEditor extends Editor {
 	}
 	
 	public void removeTranslation(String word) {
-		if (translationMap.containsKey(word)) {
-			translationMap.remove(translationMap.get(word));
-			translationMap.remove(word);
-		}
+		translationMap.remove(word);
 	}
 	
-    public String info() {
-    	return "Translator [sourceDictionary=" + sourceDictionary + ", targetDictionary=" + targetDictionary + ".";
+	@Override
+    public String getInfo() {
+    	return "Translator [sourceDictionary=" + sourceDictionary + ", targetDictionary=" + targetDictionary + "]";
     }
 	
 	@Override
