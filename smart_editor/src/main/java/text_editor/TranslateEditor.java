@@ -2,7 +2,7 @@ package main.java.text_editor;
 
 import java.util.*;
 
-public class TranslateEditor extends Editor {
+public class TranslateEditor extends Editor implements Translatable {
 
 	private Map<String, String> translationMap;
 	
@@ -11,7 +11,7 @@ public class TranslateEditor extends Editor {
 		createTranslationMap(sourceWords, targetWords);
 	}
     
-	private void createTranslationMap(ArrayList<String> sourceWords, ArrayList<String> targetWords) {
+	public void createTranslationMap(ArrayList<String> sourceWords, ArrayList<String> targetWords) {
 		if (sourceWords.size() != targetWords.size()) {
 		    throw new IllegalArgumentException("Source and target dictionaries must have the same size.");
 		}
@@ -49,10 +49,5 @@ public class TranslateEditor extends Editor {
 	public void removeWord(String word) {
 		removeTranslation(word);
 		super.removeWord(word);
-	}
-	
-	@Override
-	public String toString() {
-		return "TranslateEditor: " + text.toString();
 	}
 }

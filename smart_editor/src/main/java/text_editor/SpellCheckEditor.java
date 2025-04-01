@@ -2,7 +2,7 @@ package main.java.text_editor;
 
 import java.util.*;
 
-public class SpellCheckEditor extends Editor {
+public class SpellCheckEditor extends Editor implements SpellCheckable {
 
 		private Set<String> dictionary;
 		
@@ -33,28 +33,23 @@ public class SpellCheckEditor extends Editor {
 	        return dictionary.contains(word.toLowerCase());
 	    }
 	    
-	    @Override
-	    public String getInfo() {
-	    	return "SpellCheckEditor [dictionary=" + dictionary + "]";
-	    }
-	    
-		public void spellCheckString() {
-		    StringBuilder spellCheckedString = new StringBuilder();
+		public void checkString() {
+		    StringBuilder checkedString = new StringBuilder();
 		    String[] words = text.toString().split("\\s+");
 
 		    for (int i = 0; i < words.length; i++) {
 		        if (checkWord(words[i])) {
-		        	spellCheckedString.append(words[i]);
+		        	checkedString.append(words[i]);
 		        } else {
-		        	spellCheckedString.append("[WORD \"" + words[i] + "\" NOT FOUND]");
+		        	checkedString.append("[WORD \"" + words[i] + "\" NOT FOUND]");
 		        }
 		        
 	        	if (i < words.length - 1) {
-		            spellCheckedString.append(" ");
+		            checkedString.append(" ");
 		        }
 		    }
 
-		    text = spellCheckedString;
+		    text = checkedString;
 		}
 	    
 	    
@@ -62,10 +57,4 @@ public class SpellCheckEditor extends Editor {
 	    	super.removeWord(word);
 	    	removeWordFromDictionary(word);
 	    }
-	    
-	    @Override
-	    public String toString() {
-	    	return "SpellCheckEditor: " + text.toString();
-	    }
-		
 }

@@ -83,7 +83,5 @@ public class EditorTest {
 	        translateEditor.translateString();
 	        System.out.println("After translation:\n" + translateEditor);
 	        System.out.println();
-
-	        System.out.println();
 	    }
 }
