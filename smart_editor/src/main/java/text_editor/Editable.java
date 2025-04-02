@@ -6,6 +6,4 @@ public interface Editable {
     void removeLastCharacter();
     void removeWord();
     void removeWord(String word);
-    int getTextLength();
-    String toString();
 }

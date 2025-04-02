@@ -7,25 +7,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import main.java.text_editor.Editor;
 import main.java.text_editor.SpellCheckEditor;
 import main.java.text_editor.TranslateEditor;
 
 public class EditorTest {
 
 	   	public static void main(String[] args) {
-	        // Testing Editor
-	        Editor editor = new Editor();
-	        System.out.println("Testing Editor:\t");
-	        editor.addText("Hello world");
-	        System.out.println(editor);
-	        editor.removeWord();
-	        System.out.println("After removing last word: " + editor);
-	        editor.addText(" love life positivity lamp love freedom love peace");
-	        System.out.println("After appending: " + editor);
-	        editor.removeWord("love");
-	        System.out.println("After removing all instances of \"love\":\t " + editor);
-	        System.out.println();
 
 	        // Testing SpellCheckEditor
 	        Set<String> words = new LinkedHashSet<>();
