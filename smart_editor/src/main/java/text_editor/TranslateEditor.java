@@ -22,9 +22,12 @@ public class TranslateEditor extends Editor implements Translatable {
 			translationMap.put(sourceWords.get(i), targetWords.get(i));
 		}
 	}
-	
-	public String translateWord(String sourceWord) {
-	    return translationMap.getOrDefault(sourceWord, " [No translation found for " + sourceWord + "] ");
+
+	public String translateWord(String sourceWord) throws InvalidWordException {
+		if (!translationMap.containsKey(sourceWord)) {
+			throw new InvalidWordException(sourceWord, "No translation found for: " + sourceWord);
+		}
+		return translationMap.get(sourceWord);
 	}
 	
 	public void translateString() {

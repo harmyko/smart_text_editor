@@ -4,18 +4,18 @@ import java.util.*;
 
 public class SpellCheckEditor extends Editor implements SpellCheckable {
 
-		private Set<String> dictionary;
+		private ArrayList<String> dictionary;
 		
-		public SpellCheckEditor(Set<String> words) {
+		public SpellCheckEditor(ArrayList<String> words) {
 			super();
 			setDictionary(words);
 		}
 		
-		public void setDictionary(Set<String> words) {
+		public void setDictionary(ArrayList<String> words) {
 			dictionary = words;
 		}
 		
-		public Set<String> getDictionary() {
+		public ArrayList<String> getDictionary() {
 			return dictionary;
 		}
 		
@@ -29,7 +29,10 @@ public class SpellCheckEditor extends Editor implements SpellCheckable {
 	    	}
 	    }
 
-	    public boolean checkWord(String word) {
+	    public boolean checkWord(String word) throws InvalidWordException {
+			if (!dictionary.contains(word.toLowerCase())) {
+				throw new InvalidWordException(word, "Word '" + word + "' not found in dictionary.");
+			}
 	        return dictionary.contains(word.toLowerCase());
 	    }
 	    
@@ -40,8 +43,6 @@ public class SpellCheckEditor extends Editor implements SpellCheckable {
 		    for (int i = 0; i < words.length; i++) {
 		        if (checkWord(words[i])) {
 		        	checkedString.append(words[i]);
-		        } else {
-		        	checkedString.append("[WORD \"" + words[i] + "\" NOT FOUND]");
 		        }
 		        
 	        	if (i < words.length - 1) {
