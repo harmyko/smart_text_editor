@@ -18,19 +18,19 @@ Introduces Java basics: writing, compiling, and running a program, working with 
 ### `smart-editor/`
 A modular text editor built step-by-step over the course of the semester. Each lab added new functionality, gradually evolving the project from a simple editor to a smart tool with advanced features.
 
-#### Lab #2 – *Created an initial Java class modeling part of the smart editor, including constructors (with this()), fields with get/set access, overloaded methods, and static/final elements. A separate test class was used to create objects and demonstrate their behavior via method calls and output.*
+#### *Lab #2* – Created an initial Java class modeling part of the smart editor, including constructors (with this()), fields with get/set access, overloaded methods, and static/final elements. A separate test class was used to create objects and demonstrate their behavior via method calls and output.
 
-#### Lab #3 – *Built a class hierarchy with inheritance and polymorphism by creating at least three related classes across multiple packages. Used super() calls, method overriding (including toString()), and ensured polymorphic behavior through base-type references calling overridden methods.*
+#### *Lab #3* – Built a class hierarchy with inheritance and polymorphism by creating at least three related classes across multiple packages. Used super() calls, method overriding (including toString()), and ensured polymorphic behavior through base-type references calling overridden methods.
 
-#### Lab #4 – *Implemented an interface-based design by creating or extending interfaces and connecting them to an abstract class, which was then implemented by a concrete class. The functionality was used through the most abstract type possible to emphasize abstraction and flexibility.*
+#### *Lab #4* – Implemented an interface-based design by creating or extending interfaces and connecting them to an abstract class, which was then implemented by a concrete class. The functionality was used through the most abstract type possible to emphasize abstraction and flexibility.
 
-#### Lab #5 – *Introduced custom exceptions by creating a base class extending Exception and a subclass with detailed error information. Exceptions were thrown, declared with throws, and caught in the main class to provide informative diagnostics to the user.*
+#### *Lab #5* – Introduced custom exceptions by creating a base class extending Exception and a subclass with detailed error information. Exceptions were thrown, declared with throws, and caught in the main class to provide informative diagnostics to the user.
 
-#### Lab #6 – *work in progress...*
+#### *Lab #6* – work in progress...
 
-#### Lab #7 – *work in progress...*
+#### *Lab #7* – work in progress...
 
-#### Lab #8 – *work in progress...*
+#### *Lab #8* – work in progress...
 
 ---
 
