@@ -1,59 +1,58 @@
 package main.java.test;
 
+import main.java.text_editor.*;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import main.java.text_editor.InvalidWordException;
-import main.java.text_editor.SpellCheckEditor;
-import main.java.text_editor.TranslateEditor;
-
 public class EditorTest {
+    public static void main(String[] args) {
 
-	   	public static void main(String[] args) {
+        ArrayList<String> sourceWords = readWordsFromFile("smart_editor\\src\\main\\resources\\sourceDictionary.txt");
+        ArrayList<String> targetWords = readWordsFromFile("smart_editor\\src\\main\\resources\\targetDictionary.txt");
 
-			   	ArrayList<String> sourceWords = new ArrayList<>();
-				try (BufferedReader reader = new BufferedReader(new FileReader("smart_editor\\src\\main\\resources\\sourceDictionary.txt"))) {
-					String line;
-					while ((line = reader.readLine()) != null) {
-						for (String word : line.split("\\s+")) {
-							sourceWords.add(word.toLowerCase());
-						}
-					}
-				} catch (IOException e) {
-					throw new IllegalArgumentException(e);
-				}
 
-				ArrayList<String> targetWords = new ArrayList<>();
-				try (BufferedReader reader = new BufferedReader(new FileReader("smart_editor\\src\\main\\resources\\targetDictionary.txt"))) {
-					String line;
-					while ((line = reader.readLine()) != null) {
-						for (String word : line.split("\\s+")) {
-							targetWords.add(word.toLowerCase());
-						}
-					}
-				} catch (IOException e) {
-					throw new IllegalArgumentException(e);
-				}
+        // *** Testing SpellCheckEditor Factory ***
 
-				SpellCheckEditor spellCheckEditor = new SpellCheckEditor(sourceWords);
-				TranslateEditor translateEditor = new TranslateEditor(sourceWords, targetWords);
+        EditorFactory spellCheckFactory = new SpellCheckEditorFactory();
+        Editor spellCheckEditor = spellCheckFactory.createEditor(sourceWords);
 
-				System.out.println("Testing SpellCheckEditor:");
-				try {
-					System.out.println("Is 'hello' a valid word? " + spellCheckEditor.checkWord("hello"));
-					System.out.println("Is 'helo' valid? " + spellCheckEditor.checkWord("helo"));
-				} catch (InvalidWordException e) {
-					System.err.println(e.getMessage());
-				}
+        spellCheckEditor.addText("hello asjfasg world");
+        Editor spellCheckEditorClone = spellCheckEditor.cloneEditor();
+        spellCheckEditor.transform();
 
-				System.out.println("\nTesting TranslateEditor:");
-				try {
-					System.out.println("Translation of 'hello': " + translateEditor.translateWord("hello"));
-					System.out.println("Translation of 'helo': " + translateEditor.translateWord("helo"));
-				} catch (InvalidWordException e) {
-					System.err.println(e.getMessage());
-				}
-	    }
+        System.out.println("Before Transforming (Cloned Editor): " + spellCheckEditorClone);
+        System.out.println("After Transforming (Original Editor): " + spellCheckEditor);
+        System.out.println();
+
+
+        // *** Testing TranslateEditor Factory ***
+
+        EditorFactory translateEditorFactory = new TranslateEditorFactory();
+        Editor translateEditor = translateEditorFactory.createEditor(sourceWords, targetWords);
+        translateEditor.addText("hello world");
+
+        Editor translateEditorClone = translateEditor.cloneEditor();
+        translateEditor.transform();
+
+        System.out.println("Before Transforming (Cloned Editor): " + translateEditorClone);
+        System.out.println("After Transforming (Original Editor): " + translateEditor);
+    }
+
+    private static ArrayList<String> readWordsFromFile(String filePath) {
+        ArrayList<String> words = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                for (String word : line.split("\\s+")) {
+                    words.add(word.toLowerCase());
+                }
+            }
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        return words;
+    }
 }

@@ -1,8 +1,13 @@
 package main.java.text_editor;
 
 
-public abstract class Editor implements Editable {
+import java.util.ArrayList;
+
+public abstract class Editor
+        implements Editable, CloneableEditor, Transformable {
+
     protected StringBuilder text;
+    protected ArrayList<String> dictionary;
 
     public Editor() {
         text = new StringBuilder();
@@ -63,8 +68,12 @@ public abstract class Editor implements Editable {
         return text.length();
     }
 
+    public abstract void transform();
+
     @Override
     public String toString() {
         return text.toString();
     }
+
+    public abstract Editor cloneEditor();
 }

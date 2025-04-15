@@ -2,13 +2,20 @@ package main.java.text_editor;
 
 import java.util.*;
 
-public class TranslateEditor extends Editor implements Translatable {
+public class TranslateEditor
+		extends Editor
+		implements Transformable {
 
 	private Map<String, String> translationMap;
 	
 	public TranslateEditor(ArrayList<String> sourceWords, ArrayList<String> targetWords) {
 		super();
 		createTranslationMap(sourceWords, targetWords);
+	}
+
+	public TranslateEditor(Map<String, String> translationMap) {
+		super();
+		this.translationMap = translationMap;
 	}
     
 	public void createTranslationMap(ArrayList<String> sourceWords, ArrayList<String> targetWords) {
@@ -25,12 +32,12 @@ public class TranslateEditor extends Editor implements Translatable {
 
 	public String translateWord(String sourceWord) throws InvalidWordException {
 		if (!translationMap.containsKey(sourceWord)) {
-			throw new InvalidWordException(sourceWord, "No translation found for: " + sourceWord);
+			// throw new InvalidWordException(sourceWord, "No translation found for: " + sourceWord);
 		}
 		return translationMap.get(sourceWord);
 	}
 	
-	public void translateString() {
+	public void transform() {
 	    StringBuilder translatedString = new StringBuilder();
 	    String[] words = text.toString().split("\\s+");
 
@@ -43,7 +50,7 @@ public class TranslateEditor extends Editor implements Translatable {
 
 	    text = translatedString;
 	}
-	
+
 	public void removeTranslation(String word) {
 		translationMap.remove(word);
 	}
@@ -52,5 +59,12 @@ public class TranslateEditor extends Editor implements Translatable {
 	public void removeWord(String word) {
 		removeTranslation(word);
 		super.removeWord(word);
+	}
+
+	@Override
+	public Editor cloneEditor() {
+		TranslateEditor clone = new TranslateEditor(this.translationMap);
+		clone.addText(this.text.toString());
+		return clone;
 	}
 }
