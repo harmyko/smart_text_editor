@@ -16,29 +16,28 @@ public class EditorTest {
 
         // *** Testing SpellCheckEditor Factory ***
 
-        EditorFactory spellCheckFactory = new SpellCheckEditorFactory();
-        Editor spellCheckEditor = spellCheckFactory.createEditor(sourceWords);
-
-        spellCheckEditor.addText("hello asjfasg world");
-        Editor spellCheckEditorClone = spellCheckEditor.cloneEditor();
-        spellCheckEditor.transform();
-
-        System.out.println("Before Transforming (Cloned Editor): " + spellCheckEditorClone);
-        System.out.println("After Transforming (Original Editor): " + spellCheckEditor);
-        System.out.println();
+        EditorFactory factory = new SpellCheckEditorFactory();
+        factory.setDictionary(sourceWords);
+        Editor editor = factory.createEditor();
 
 
-        // *** Testing TranslateEditor Factory ***
+        System.out.println("*** SpellChecker deep cloning demonstration! ***");
+        editor.addText("hello world");
+        System.out.println("Original Editor:\t" + editor);
 
-        EditorFactory translateEditorFactory = new TranslateEditorFactory();
-        Editor translateEditor = translateEditorFactory.createEditor(sourceWords, targetWords);
-        translateEditor.addText("hello world");
+        Editor editorClone = null;
+        try {
+            editorClone = (Editor) editor.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Cloned Editor:\t\t" + editorClone);
 
-        Editor translateEditorClone = translateEditor.cloneEditor();
-        translateEditor.transform();
+        System.out.println("** Adding \"new_word\" the original editor! **");
+        editor.addText(" new_word");
 
-        System.out.println("Before Transforming (Cloned Editor): " + translateEditorClone);
-        System.out.println("After Transforming (Original Editor): " + translateEditor);
+        System.out.println("Original Editor:\t" + editor);
+        System.out.println("Cloned Editor:\t\t" + editorClone);
     }
 
     private static ArrayList<String> readWordsFromFile(String filePath) {

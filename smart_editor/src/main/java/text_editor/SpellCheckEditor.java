@@ -4,11 +4,17 @@ import java.util.*;
 
 public class SpellCheckEditor
 		extends Editor
-		implements Transformable {
+		implements Transformable, Cloneable {
+
+	private ArrayList<String> dictionary;
 
 	public SpellCheckEditor(ArrayList<String> words) {
 		super();
 		setDictionary(words);
+	}
+
+	public SpellCheckEditor() {
+		super();
 	}
 
 	public void setDictionary(ArrayList<String> words) {
@@ -59,9 +65,10 @@ public class SpellCheckEditor
 	}
 
 	@Override
-	public Editor cloneEditor() {
-		SpellCheckEditor clone = new SpellCheckEditor(new ArrayList<>(this.dictionary));
-		clone.addText(this.text.toString());
+	public Object clone() throws CloneNotSupportedException {
+		SpellCheckEditor clone = (SpellCheckEditor) super.clone();
+		clone.dictionary = new ArrayList<String>(this.dictionary);
 		return clone;
 	}
+
 }

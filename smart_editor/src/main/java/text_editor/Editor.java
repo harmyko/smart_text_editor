@@ -1,13 +1,9 @@
 package main.java.text_editor;
 
-
-import java.util.ArrayList;
-
 public abstract class Editor
-        implements Editable, CloneableEditor, Transformable {
+        implements Editable, Cloneable {
 
     protected StringBuilder text;
-    protected ArrayList<String> dictionary;
 
     public Editor() {
         text = new StringBuilder();
@@ -75,5 +71,10 @@ public abstract class Editor
         return text.toString();
     }
 
-    public abstract Editor cloneEditor();
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Editor clone = (Editor) super.clone();
+        clone.text = new StringBuilder(this.text.toString());
+        return clone;
+    }
 }

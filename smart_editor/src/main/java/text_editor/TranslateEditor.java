@@ -4,16 +4,20 @@ import java.util.*;
 
 public class TranslateEditor
 		extends Editor
-		implements Transformable {
+		implements Transformable, Cloneable {
 
-	private Map<String, String> translationMap;
+	private LinkedHashMap<String, String> translationMap;
 	
 	public TranslateEditor(ArrayList<String> sourceWords, ArrayList<String> targetWords) {
 		super();
 		createTranslationMap(sourceWords, targetWords);
 	}
 
-	public TranslateEditor(Map<String, String> translationMap) {
+	public TranslateEditor() {
+		super();
+	}
+
+	public TranslateEditor(LinkedHashMap<String, String> translationMap) {
 		super();
 		this.translationMap = translationMap;
 	}
@@ -31,9 +35,9 @@ public class TranslateEditor
 	}
 
 	public String translateWord(String sourceWord) throws InvalidWordException {
-		if (!translationMap.containsKey(sourceWord)) {
-			// throw new InvalidWordException(sourceWord, "No translation found for: " + sourceWord);
-		}
+	/*	if (!translationMap.containsKey(sourceWord)) {
+			throw new InvalidWordException(sourceWord, "No translation found for: " + sourceWord);
+		} */
 		return translationMap.get(sourceWord);
 	}
 	
@@ -62,9 +66,10 @@ public class TranslateEditor
 	}
 
 	@Override
-	public Editor cloneEditor() {
-		TranslateEditor clone = new TranslateEditor(this.translationMap);
-		clone.addText(this.text.toString());
+	public Object clone() throws CloneNotSupportedException {
+		TranslateEditor clone = (TranslateEditor) super.clone();
+		clone.translationMap = new LinkedHashMap<>(this.translationMap);
 		return clone;
 	}
+
 }
