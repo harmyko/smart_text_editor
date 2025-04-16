@@ -26,7 +26,7 @@ A modular text editor built step-by-step over the course of the semester. Each l
 
 #### **Lab #5** – *Introduced custom exceptions by creating a base class extending Exception and a subclass with detailed error information. Exceptions were thrown, declared with throws, and caught in the main class to provide informative diagnostics to the user.*
 
-#### **Lab #6** – *work in progress...*
+#### **Lab #6** – *Implemented the Factory Method design pattern, deep copy methods for Editor classes and used both features in a meaningful way inside the test class.*
 
 #### **Lab #7** – *work in progress...*
 
