@@ -35,9 +35,10 @@ public class TranslateEditor
 	}
 
 	public String translateWord(String sourceWord) throws InvalidWordException {
-	/*	if (!translationMap.containsKey(sourceWord)) {
-			throw new InvalidWordException(sourceWord, "No translation found for: " + sourceWord);
-		} */
+	if (!translationMap.containsKey(sourceWord)) {
+			//throw new InvalidWordException(sourceWord, "No translation found for: " + sourceWord);
+			return sourceWord;
+		}
 		return translationMap.get(sourceWord);
 	}
 	

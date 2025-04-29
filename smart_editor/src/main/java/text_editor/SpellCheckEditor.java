@@ -15,6 +15,7 @@ public class SpellCheckEditor
 
 	public SpellCheckEditor() {
 		super();
+		dictionary = new ArrayList<String>();
 	}
 
 	public void setDictionary(ArrayList<String> words) {
@@ -46,18 +47,20 @@ public class SpellCheckEditor
 		StringBuilder checkedString = new StringBuilder();
 		String[] words = text.toString().split("\\s+");
 
-		for (int i = 0; i < words.length; i++) {
-			if (checkWord(words[i])) {
-				checkedString.append(words[i]);
-			}
-
-			if (i < words.length - 1) {
-				checkedString.append(" ");
+		boolean firstWordAdded = false;
+		for (String word : words) {
+			if (checkWord(word)) {
+				if (firstWordAdded) {
+					checkedString.append(" ");
+				}
+				checkedString.append(word);
+				firstWordAdded = true;
 			}
 		}
 
 		text = checkedString;
 	}
+
 
 	public void removeWord(String word) {
 		super.removeWord(word);

@@ -14,30 +14,27 @@ public class EditorTest {
         ArrayList<String> targetWords = readWordsFromFile("smart_editor\\src\\main\\resources\\targetDictionary.txt");
 
 
-        // *** Testing SpellCheckEditor Factory ***
+        System.out.println("*** Factory method demonstration! ***");
 
-        EditorFactory factory = new SpellCheckEditorFactory();
-        factory.setDictionary(sourceWords);
-        Editor editor = factory.createEditor();
+        EditorFactory spellCheckFactory = new SpellCheckEditorFactory();
+        spellCheckFactory.setDictionary(sourceWords);
 
+        EditorFactory translateEditorFactory = new TranslateEditorFactory();
+        translateEditorFactory.setDictionary(sourceWords);
+        translateEditorFactory.setTargetDictionary(targetWords);
 
-        System.out.println("*** SpellChecker deep cloning demonstration! ***");
-        editor.addText("hello world");
-        System.out.println("Original Editor:\t" + editor);
+        EditorFactory factory = spellCheckFactory;
 
-        Editor editorClone = null;
-        try {
-            editorClone = (Editor) editor.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+        for (int i = 0; i < 2; i++) {
+            Editor editor = factory.createEditor();
+            editor.addText("hello world asdfghjkl love");
+            System.out.println("Before transformation: " + editor);
+            editor.transform();
+            System.out.println("After transformation: " + editor);
+            System.out.println();
+
+            factory = translateEditorFactory;
         }
-        System.out.println("Cloned Editor:\t\t" + editorClone);
-
-        System.out.println("** Adding \"new_word\" the original editor! **");
-        editor.addText(" new_word");
-
-        System.out.println("Original Editor:\t" + editor);
-        System.out.println("Cloned Editor:\t\t" + editorClone);
     }
 
     private static ArrayList<String> readWordsFromFile(String filePath) {
