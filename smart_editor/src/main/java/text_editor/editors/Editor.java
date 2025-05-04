@@ -1,4 +1,6 @@
-package main.java.text_editor;
+package main.java.text_editor.editors;
+
+import main.java.text_editor.interfaces.Editable;
 
 public abstract class Editor
         implements Editable, Cloneable {
@@ -74,7 +76,7 @@ public abstract class Editor
     @Override
     public Object clone() throws CloneNotSupportedException {
         Editor clone = (Editor) super.clone();
-        clone.text = new StringBuilder(this.text.toString());
+        //clone.text = new StringBuilder(this.text.toString());
         return clone;
     }
 }

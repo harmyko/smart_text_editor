@@ -1,6 +1,8 @@
 package main.java.test;
 
-import main.java.text_editor.*;
+import main.java.text_editor.editors.*;
+import main.java.text_editor.exceptions.*;
+import main.java.text_editor.factory.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

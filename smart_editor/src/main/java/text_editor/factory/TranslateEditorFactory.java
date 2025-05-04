@@ -1,4 +1,7 @@
-package main.java.text_editor;
+package main.java.text_editor.factory;
+
+import main.java.text_editor.editors.Editor;
+import main.java.text_editor.editors.TranslateEditor;
 
 public class TranslateEditorFactory extends EditorFactory {
 

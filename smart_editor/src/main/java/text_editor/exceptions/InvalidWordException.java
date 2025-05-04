@@ -1,4 +1,4 @@
-package main.java.text_editor;
+package main.java.text_editor.exceptions;
 
 public class InvalidWordException extends EditorException {
     private final String word;

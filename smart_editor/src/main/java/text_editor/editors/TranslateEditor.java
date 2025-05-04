@@ -1,4 +1,7 @@
-package main.java.text_editor;
+package main.java.text_editor.editors;
+
+import main.java.text_editor.exceptions.InvalidWordException;
+import main.java.text_editor.interfaces.Transformable;
 
 import java.util.*;
 
