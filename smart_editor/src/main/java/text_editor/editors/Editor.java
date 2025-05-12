@@ -2,8 +2,10 @@ package main.java.text_editor.editors;
 
 import main.java.text_editor.interfaces.Editable;
 
+import java.io.Serializable;
+
 public abstract class Editor
-        implements Editable, Cloneable {
+        implements Editable, Cloneable, Serializable {
 
     protected StringBuilder text;
 

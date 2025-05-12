@@ -3,11 +3,12 @@ package main.java.text_editor.editors;
 import main.java.text_editor.exceptions.InvalidWordException;
 import main.java.text_editor.interfaces.Transformable;
 
+import java.io.Serializable;
 import java.util.*;
 
 public class TranslateEditor
 		extends Editor
-		implements Transformable, Cloneable {
+		implements Transformable, Cloneable, Serializable {
 
 	private LinkedHashMap<String, String> translationMap;
 	

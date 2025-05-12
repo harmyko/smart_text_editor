@@ -1,6 +1,8 @@
 package main.java.text_editor.interfaces;
 
-public interface Editable {
+import java.io.Serializable;
+
+public interface Editable extends Serializable {
     void addText(char character);
     void addText(String string);
     void removeLastCharacter();
