@@ -6,9 +6,6 @@ import main.java.text_editor.factory.*;
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * Manages the editor instances and their state.
- */
 public class EditorManager {
     private Editor currentEditor;
     private EditorFactory spellCheckFactory;
@@ -21,7 +18,6 @@ public class EditorManager {
     public EditorManager() {
         initializeFactories();
 
-        // Initialize with spell check editor as default
         switchToSpellCheckEditor();
     }
 
@@ -30,9 +26,6 @@ public class EditorManager {
         translateFactory = new TranslateEditorFactory();
     }
 
-    /**
-     * Switches to spell check editor using default dictionary
-     */
     public void switchToSpellCheckEditor() {
         currentEditor = spellCheckFactory.createEditor();
 
@@ -42,9 +35,6 @@ public class EditorManager {
         }
     }
 
-    /**
-     * Switches to translate editor using default dictionaries
-     */
     public void switchToTranslateEditor() {
         currentEditor = translateFactory.createEditor();
 
@@ -55,30 +45,18 @@ public class EditorManager {
         }
     }
 
-    /**
-     * Returns the current editor
-     */
     public Editor getCurrentEditor() {
         return currentEditor;
     }
 
-    /**
-     * Sets the current editor directly (used when loading saved state)
-     */
     public void setCurrentEditor(Editor editor) {
         this.currentEditor = editor;
     }
 
-    /**
-     * Gets the resource path for dictionary files
-     */
     public String getResourcePath() {
         return RESOURCE_PATH;
     }
 
-    /**
-     * Utility method to read word lists from files
-     */
     public static ArrayList<String> readWordsFromFile(String filePath) {
         ArrayList<String> words = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {

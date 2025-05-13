@@ -6,10 +6,6 @@ import main.java.text_editor.factory.*;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Main GUI class for the text editor application.
- * This class coordinates the different components of the editor GUI.
- */
 public class EditorGUI implements Runnable {
     private JFrame frame;
     private EditorPanel editorPanel;
@@ -18,17 +14,15 @@ public class EditorGUI implements Runnable {
 
     private EditorManager editorManager;
 
-    public EditorGUI() {
-        // Initialize the editor manager first
-        this.editorManager = new EditorManager();
-
-        // Create GUI components
-        createGUI();
-    }
-
     @Override
     public void run() {
         frame.setVisible(true);
+    }
+
+    public EditorGUI() {
+        this.editorManager = new EditorManager();
+
+        createGUI();
     }
 
     private void createGUI() {
