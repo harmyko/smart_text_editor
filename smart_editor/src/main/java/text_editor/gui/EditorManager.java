@@ -14,8 +14,8 @@ public class EditorManager {
     private EditorFactory spellCheckFactory;
     private EditorFactory translateFactory;
 
-    private static final String SOURCE_DICTIONARY_PATH = "smart_editor/src/main/resources/source_dictionary.txt";
-    private static final String TARGET_DICTIONARY_PATH = "smart_editor/src/main/resources/target_dictionary.txt";
+    private static final String DEFAULT_SOURCE_DICTIONARY_PATH = "smart_editor/src/main/resources/source_dictionary.txt";
+    private static final String DEFAULT_TARGET_DICTIONARY_PATH = "smart_editor/src/main/resources/target_dictionary.txt";
     private static final String RESOURCE_PATH = "smart_editor/src/main/resources/";
 
     public EditorManager() {
@@ -31,26 +31,26 @@ public class EditorManager {
     }
 
     /**
-     * Switches to spell check editor
+     * Switches to spell check editor using default dictionary
      */
     public void switchToSpellCheckEditor() {
         currentEditor = spellCheckFactory.createEditor();
 
         if (currentEditor instanceof SpellCheckEditor) {
-            ArrayList<String> words = readWordsFromFile(SOURCE_DICTIONARY_PATH);
+            ArrayList<String> words = readWordsFromFile(DEFAULT_SOURCE_DICTIONARY_PATH);
             ((SpellCheckEditor) currentEditor).setDictionary(words);
         }
     }
 
     /**
-     * Switches to translate editor
+     * Switches to translate editor using default dictionaries
      */
     public void switchToTranslateEditor() {
         currentEditor = translateFactory.createEditor();
 
         if (currentEditor instanceof TranslateEditor) {
-            ArrayList<String> sourceWords = readWordsFromFile(SOURCE_DICTIONARY_PATH);
-            ArrayList<String> targetWords = readWordsFromFile(TARGET_DICTIONARY_PATH);
+            ArrayList<String> sourceWords = readWordsFromFile(DEFAULT_SOURCE_DICTIONARY_PATH);
+            ArrayList<String> targetWords = readWordsFromFile(DEFAULT_TARGET_DICTIONARY_PATH);
             ((TranslateEditor) currentEditor).createTranslationMap(sourceWords, targetWords);
         }
     }

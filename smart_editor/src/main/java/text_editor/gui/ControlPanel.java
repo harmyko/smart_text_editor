@@ -7,6 +7,7 @@ import main.java.text_editor.serialization.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Contains the editor control buttons and type selection.
@@ -15,6 +16,7 @@ public class ControlPanel extends JPanel {
     private JButton transformButton;
     private JButton saveButton;
     private JButton loadButton;
+    private JButton chooseDictionaryButton;
     private JComboBox<String> editorTypeComboBox;
 
     private EditorManager editorManager;
@@ -56,11 +58,15 @@ public class ControlPanel extends JPanel {
         loadButton = new JButton("Load Editor");
         loadButton.addActionListener(e -> loadEditorState());
 
+        chooseDictionaryButton = new JButton("Choose Dictionary");
+        chooseDictionaryButton.addActionListener(e -> chooseDictionary());
+
         // Add components to panel
         add(editorTypeComboBox);
         add(transformButton);
         add(saveButton);
         add(loadButton);
+        add(chooseDictionaryButton);
     }
 
     private void transformText() {
@@ -100,7 +106,19 @@ public class ControlPanel extends JPanel {
     private void saveEditorState() {
         final Editor editorToSave = editorManager.getCurrentEditor();
         final String editorType = editorTypeComboBox.getSelectedItem().toString();
-        final String fileName = editorManager.getResourcePath() + editorType.replace(" ", "") + ".ser";
+
+        // Show file chooser dialog to select save location
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Editor State");
+        fileChooser.setSelectedFile(new File(editorManager.getResourcePath() + editorType.replace(" ", "") + ".ser"));
+
+        int userSelection = fileChooser.showSaveDialog(SwingUtilities.getWindowAncestor(this));
+
+        if (userSelection != JFileChooser.APPROVE_OPTION) {
+            return; // User cancelled the operation
+        }
+
+        final String fileName = fileChooser.getSelectedFile().getAbsolutePath();
 
         Thread saveThread = new Thread(() -> {
             SwingUtilities.invokeLater(() -> {
@@ -111,9 +129,9 @@ public class ControlPanel extends JPanel {
             try {
                 Thread.sleep(1000);
 
-                File resourceDir = new File(editorManager.getResourcePath());
-                if (!resourceDir.exists()) {
-                    resourceDir.mkdirs();
+                File parentDir = new File(fileName).getParentFile();
+                if (parentDir != null && !parentDir.exists()) {
+                    parentDir.mkdirs();
                 }
 
                 EditorSerializer.saveEditor(editorToSave, fileName);
@@ -145,8 +163,19 @@ public class ControlPanel extends JPanel {
     }
 
     private void loadEditorState() {
+        // Show file chooser dialog to select file to load
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Load Editor State");
+        fileChooser.setSelectedFile(new File(editorManager.getResourcePath()));
+
+        int userSelection = fileChooser.showOpenDialog(SwingUtilities.getWindowAncestor(this));
+
+        if (userSelection != JFileChooser.APPROVE_OPTION) {
+            return; // User cancelled the operation
+        }
+
+        final String fileName = fileChooser.getSelectedFile().getAbsolutePath();
         final String editorType = editorTypeComboBox.getSelectedItem().toString();
-        final String fileName = editorManager.getResourcePath() + editorType.replace(" ", "") + ".ser";
 
         Thread loadThread = new Thread(() -> {
             SwingUtilities.invokeLater(() -> {
@@ -196,5 +225,143 @@ public class ControlPanel extends JPanel {
         });
 
         loadThread.start();
+    }
+
+    private void chooseDictionary() {
+        String selectedType = (String) editorTypeComboBox.getSelectedItem();
+
+        if ("SpellCheck Editor".equals(selectedType)) {
+            // For SpellCheck, select a single dictionary file
+            chooseSpellCheckDictionary();
+        } else {
+            // For Translate, select source and target dictionary files
+            chooseTranslateDictionaries();
+        }
+    }
+
+    private void chooseSpellCheckDictionary() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select Dictionary File");
+
+        int userSelection = fileChooser.showOpenDialog(SwingUtilities.getWindowAncestor(this));
+
+        if (userSelection != JFileChooser.APPROVE_OPTION) {
+            return; // User cancelled the operation
+        }
+
+        final String dictionaryPath = fileChooser.getSelectedFile().getAbsolutePath();
+
+        Thread loadDictionaryThread = new Thread(() -> {
+            SwingUtilities.invokeLater(() -> {
+                statusPanel.setStatus("Loading dictionary...", true);
+                chooseDictionaryButton.setEnabled(false);
+            });
+
+            try {
+                Thread.sleep(500);
+
+                // Read words from the selected file
+                ArrayList<String> words = EditorManager.readWordsFromFile(dictionaryPath);
+
+                // Update the current editor if it's a SpellCheckEditor
+                Editor currentEditor = editorManager.getCurrentEditor();
+                if (currentEditor instanceof SpellCheckEditor) {
+                    ((SpellCheckEditor) currentEditor).setDictionary(words);
+
+                    SwingUtilities.invokeLater(() -> {
+                        statusPanel.setStatusWithProgress("Dictionary loaded successfully", 100, false);
+                        chooseDictionaryButton.setEnabled(true);
+
+                        Timer timer = new Timer(2000, event -> {
+                            statusPanel.resetStatus();
+                        });
+                        timer.setRepeats(false);
+                        timer.start();
+                    });
+                }
+            } catch (Exception e) {
+                SwingUtilities.invokeLater(() -> {
+                    statusPanel.setStatus("Error loading dictionary: " + e.getMessage(), false);
+                    chooseDictionaryButton.setEnabled(true);
+
+                    JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
+                            "Error loading dictionary: " + e.getMessage(),
+                            "Dictionary Error", JOptionPane.ERROR_MESSAGE);
+                });
+                e.printStackTrace();
+            }
+        });
+
+        loadDictionaryThread.start();
+    }
+
+    private void chooseTranslateDictionaries() {
+        // First, select source dictionary
+        JFileChooser sourceFileChooser = new JFileChooser();
+        sourceFileChooser.setDialogTitle("Select Source Dictionary File");
+
+        int sourceSelection = sourceFileChooser.showOpenDialog(SwingUtilities.getWindowAncestor(this));
+
+        if (sourceSelection != JFileChooser.APPROVE_OPTION) {
+            return; // User cancelled the operation
+        }
+
+        final String sourceDictionaryPath = sourceFileChooser.getSelectedFile().getAbsolutePath();
+
+        // Then, select target dictionary
+        JFileChooser targetFileChooser = new JFileChooser();
+        targetFileChooser.setDialogTitle("Select Target Dictionary File");
+
+        int targetSelection = targetFileChooser.showOpenDialog(SwingUtilities.getWindowAncestor(this));
+
+        if (targetSelection != JFileChooser.APPROVE_OPTION) {
+            return; // User cancelled the operation
+        }
+
+        final String targetDictionaryPath = targetFileChooser.getSelectedFile().getAbsolutePath();
+
+        Thread loadDictionariesThread = new Thread(() -> {
+            SwingUtilities.invokeLater(() -> {
+                statusPanel.setStatus("Loading dictionaries...", true);
+                chooseDictionaryButton.setEnabled(false);
+            });
+
+            try {
+                Thread.sleep(500);
+
+                // Read words from the selected files
+                ArrayList<String> sourceWords = EditorManager.readWordsFromFile(sourceDictionaryPath);
+                ArrayList<String> targetWords = EditorManager.readWordsFromFile(targetDictionaryPath);
+
+                // Update the current editor if it's a TranslateEditor
+                Editor currentEditor = editorManager.getCurrentEditor();
+                if (currentEditor instanceof TranslateEditor) {
+                    ((TranslateEditor) currentEditor).createTranslationMap(sourceWords, targetWords);
+
+                    SwingUtilities.invokeLater(() -> {
+                        statusPanel.setStatusWithProgress("Dictionaries loaded successfully", 100, false);
+                        chooseDictionaryButton.setEnabled(true);
+
+                        Timer timer = new Timer(2000, event -> {
+                            statusPanel.resetStatus();
+                        });
+                        timer.setRepeats(false);
+                        timer.start();
+                    });
+                }
+            } catch (Exception e) {
+                SwingUtilities.invokeLater(() -> {
+                    statusPanel.setStatus("Error loading dictionaries: " + e.getMessage(), false);
+                    chooseDictionaryButton.setEnabled(true);
+
+                    JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
+                            "Error loading dictionaries: " + e.getMessage(),
+                            "Dictionary Error", JOptionPane.ERROR_MESSAGE);
+                });
+                e.printStackTrace();
+            }
+        });
+
+        loadDictionariesThread.start();
     }
 }

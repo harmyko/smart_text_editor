@@ -32,17 +32,14 @@ public class EditorGUI implements Runnable {
     }
 
     private void createGUI() {
-        // Create main frame
         frame = new JFrame("Text Editor Application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 600);
 
-        // Create panels with dependencies
         statusPanel = new StatusPanel();
         editorPanel = new EditorPanel(editorManager);
         controlPanel = new ControlPanel(editorManager, editorPanel, statusPanel);
 
-        // Arrange panels in frame
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(controlPanel, BorderLayout.NORTH);
         mainPanel.add(editorPanel, BorderLayout.CENTER);

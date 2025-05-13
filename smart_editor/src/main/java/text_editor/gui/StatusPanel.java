@@ -19,7 +19,7 @@ public class StatusPanel extends JPanel {
 
     private void createStatusComponents() {
         // Create status label
-        statusLabel = new JLabel("Ready");
+        statusLabel = new JLabel("Editor status: Ready");
         statusLabel.setFont(new Font(statusLabel.getFont().getName(), Font.PLAIN, 11));
 
         // Create progress bar (smaller size)
@@ -27,19 +27,24 @@ public class StatusPanel extends JPanel {
         progressBar.setStringPainted(true);
         progressBar.setPreferredSize(new Dimension(150, 15));
 
-        // Create a panel for the status components
-        JPanel statusBarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        statusBarPanel.add(statusLabel);
-        statusBarPanel.add(progressBar);
+        // Create a panel for the status text (left aligned)
+        JPanel statusTextPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        statusTextPanel.add(statusLabel);
 
-        add(statusBarPanel, BorderLayout.WEST);
+        // Create a panel for the progress bar (right aligned)
+        JPanel progressBarPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+        progressBarPanel.add(progressBar);
+
+        // Add components to the main panel
+        add(statusTextPanel, BorderLayout.WEST);
+        add(progressBarPanel, BorderLayout.EAST);
     }
 
     /**
      * Updates the status text and progress bar state
      */
     public void setStatus(String text, boolean indeterminate) {
-        statusLabel.setText(text);
+        statusLabel.setText("Editor status: " + text);
         progressBar.setIndeterminate(indeterminate);
 
         if (!indeterminate) {
@@ -51,7 +56,7 @@ public class StatusPanel extends JPanel {
      * Updates status with specific progress value
      */
     public void setStatusWithProgress(String text, int progressValue, boolean indeterminate) {
-        statusLabel.setText(text);
+        statusLabel.setText("Editor status: " + text);
         progressBar.setIndeterminate(indeterminate);
 
         if (!indeterminate) {
@@ -63,7 +68,7 @@ public class StatusPanel extends JPanel {
      * Resets the status display to default state
      */
     public void resetStatus() {
-        statusLabel.setText("Ready");
+        statusLabel.setText("Editor status: Ready");
         progressBar.setIndeterminate(false);
         progressBar.setValue(0);
     }
