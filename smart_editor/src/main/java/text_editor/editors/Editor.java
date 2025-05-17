@@ -8,37 +8,48 @@ public abstract class Editor
         implements Editable, Cloneable, Serializable {
 
     protected StringBuilder text;
+    protected int caretPosition;
 
     public Editor() {
         text = new StringBuilder();
+        caretPosition = 0;
     }
 
     public Editor(String initialText) {
         this();
         text.append(initialText);
+        caretPosition = initialText.length();
     }
 
     public void addText(char character) {
-        text.append(character);
+        text.insert(caretPosition, character);
+        caretPosition++;
     }
 
     public void addText(String text) {
-        this.text.append(text);
+        this.text.insert(caretPosition, text);
+        caretPosition += text.length();
     }
 
     public final void removeLastCharacter() {
         if (!text.isEmpty()) {
-            text.deleteCharAt(text.length() - 1);
+            text.deleteCharAt(caretPosition - 1);
+            caretPosition--;
         }
     }
 
     public void removeWord() {
-        if (!text.isEmpty()) {
-            int lastSpaceIndex = text.lastIndexOf(" ");
-            if (lastSpaceIndex == -1) {
-                text.setLength(0);
-            } else {
-                text.delete(lastSpaceIndex, text.length());
+        if (!text.isEmpty() && caretPosition > 0) {
+            int searchStart = caretPosition - 1;
+
+            int wordStart = searchStart;
+            while (wordStart > 0 && !Character.isWhitespace(text.charAt(wordStart - 1))) {
+                wordStart--;
+            }
+
+            if (wordStart < caretPosition) {
+                text.delete(wordStart, caretPosition);
+                caretPosition = wordStart;
             }
         }
     }
@@ -57,11 +68,28 @@ public abstract class Editor
                 if (index > 0 && index < text.length() && text.charAt(index) == ' ') {
                     text.deleteCharAt(index);
                 }
+
+                if (index < caretPosition) {
+                    caretPosition = Math.max(0, caretPosition - (word.length() + (index < text.length() && text.charAt(index) == ' ' ? 1 : 0)));
+                }
             }
 
             textStr = text.toString();
             index = textStr.lastIndexOf(word);
         }
+    }
+
+    public void setCaretPosition(int position) {
+        if (position < 0) {
+            position = 0;
+        } else if (position > text.length()) {
+            position = text.length();
+        }
+        this.caretPosition = position;
+    }
+
+    public int getCaretPosition() {
+        return caretPosition;
     }
 
     public int getTextLength() {

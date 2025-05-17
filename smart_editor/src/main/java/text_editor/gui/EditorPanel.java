@@ -1,13 +1,18 @@
 package main.java.text_editor.gui;
 
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class EditorPanel extends JPanel {
     private JTextArea textArea;
     private EditorManager editorManager;
+    private boolean updatingFromEditor = false;
 
     public EditorPanel(EditorManager editorManager) {
         this.editorManager = editorManager;
@@ -24,6 +29,7 @@ public class EditorPanel extends JPanel {
         textArea.setFont(new Font(textArea.getFont().getName(), Font.PLAIN, 14));
 
         setupKeyListeners();
+        setupCaretListener();
 
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -31,9 +37,19 @@ public class EditorPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
+    private void setupCaretListener() {
+        textArea.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                if (!updatingFromEditor) {
+                    editorManager.getCurrentEditor().setCaretPosition(e.getDot());
+                }
+            }
+        });
+    }
+
     private void setupKeyListeners() {
         textArea.addKeyListener(new KeyAdapter() {
-
             @Override
             public void keyTyped(KeyEvent e) {
                 e.consume();
@@ -52,21 +68,48 @@ public class EditorPanel extends JPanel {
                     e.consume();
 
                     if (e.isControlDown()) {
-                        // Ctrl+Backspace -> remove word
+                        // Ctrl+Backspace -> remove word at caret
                         editorManager.getCurrentEditor().removeWord();
                     } else {
-                        // Regular Backspace -> remove last character
+                        // Regular Backspace -> remove character before caret
                         editorManager.getCurrentEditor().removeLastCharacter();
                     }
                     updateDisplay();
                 }
+
+                else if (e.getKeyCode() == KeyEvent.VK_LEFT ||
+                        e.getKeyCode() == KeyEvent.VK_RIGHT ||
+                        e.getKeyCode() == KeyEvent.VK_UP ||
+                        e.getKeyCode() == KeyEvent.VK_DOWN) {
+                }
+
+                else {
+                    int caretPosition = textArea.getCaretPosition();
+                    editorManager.getCurrentEditor().setCaretPosition(caretPosition);
+                }
+            }
+        });
+
+        textArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int caretPosition = textArea.getCaretPosition();
+                editorManager.getCurrentEditor().setCaretPosition(caretPosition);
             }
         });
     }
 
     public void updateDisplay() {
+        updatingFromEditor = true;
         String currentText = editorManager.getCurrentEditor().toString();
         textArea.setText(currentText);
-        textArea.setCaretPosition(currentText.length());
+
+        int caretPos = editorManager.getCurrentEditor().getCaretPosition();
+        if (caretPos >= 0 && caretPos <= currentText.length()) {
+            textArea.setCaretPosition(caretPos);
+        } else {
+            textArea.setCaretPosition(currentText.length());
+        }
+        updatingFromEditor = false;
     }
 }

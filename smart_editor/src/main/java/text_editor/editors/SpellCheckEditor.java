@@ -65,12 +65,6 @@ public class SpellCheckEditor
 		text = checkedString;
 	}
 
-
-	public void removeWord(String word) {
-		super.removeWord(word);
-		removeWordFromDictionary(word);
-	}
-
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		SpellCheckEditor clone = (SpellCheckEditor) super.clone();

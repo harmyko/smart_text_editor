@@ -1,8 +1,5 @@
 package main.java.text_editor.gui;
 
-import main.java.text_editor.editors.*;
-import main.java.text_editor.factory.*;
-
 import javax.swing.*;
 import java.awt.*;
 

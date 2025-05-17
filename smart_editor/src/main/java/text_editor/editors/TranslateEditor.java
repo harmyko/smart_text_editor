@@ -63,12 +63,6 @@ public class TranslateEditor
 	public void removeTranslation(String word) {
 		translationMap.remove(word);
 	}
-	
-	@Override
-	public void removeWord(String word) {
-		removeTranslation(word);
-		super.removeWord(word);
-	}
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
