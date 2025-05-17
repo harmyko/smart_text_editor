@@ -28,7 +28,7 @@ A modular text editor built step-by-step over the course of the semester. Each l
 
 #### **Lab #6** – *Implemented the Factory Method design pattern, deep copy methods for Editor classes and used both features in a meaningful way inside the test class.*
 
-#### **Lab #7** – * Implemented the Serializable interface in the Editor and designed a basic Graphical User Interface and made use of threads to handle different processes.*
+#### **Lab #7** – *Implemented the Serializable interface in the Editor and designed a basic Graphical User Interface and made use of threads to handle different processes.*
 
 #### **Lab #8** – *work in progress...*
 The course emphasizes object-oriented design, abstraction, encapsulation, inheritance, and polymorphism. The final project demonstrates a practical application of these principles through iterative development.
