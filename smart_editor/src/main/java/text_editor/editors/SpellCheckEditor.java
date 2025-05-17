@@ -40,10 +40,7 @@ public class SpellCheckEditor
 		}
 	}
 
-	public boolean checkWord(String word) throws InvalidWordException {
-		if (!dictionary.contains(word.toLowerCase())) {
-			// throw new InvalidWordException(word, "Word '" + word + "' not found in dictionary.");
-		}
+	public boolean checkWord(String word) {
 		return dictionary.contains(word.toLowerCase());
 	}
 

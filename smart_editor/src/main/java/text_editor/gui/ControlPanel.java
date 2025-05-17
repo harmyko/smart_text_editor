@@ -102,7 +102,9 @@ public class ControlPanel extends JPanel {
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save Editor State");
-        fileChooser.setSelectedFile(new File(editorManager.getResourcePath() + editorType.replace(" ", "") + ".ser"));
+
+        fileChooser.setCurrentDirectory(new File(editorManager.getResourcePath()));
+        fileChooser.setSelectedFile(new File(editorType.replace(" ", "") + ".ser"));
 
         int userSelection = fileChooser.showSaveDialog(SwingUtilities.getWindowAncestor(this));
 
@@ -157,7 +159,7 @@ public class ControlPanel extends JPanel {
     private void loadEditorState() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Load Editor State");
-        fileChooser.setSelectedFile(new File(editorManager.getResourcePath()));
+        fileChooser.setCurrentDirectory(new File(editorManager.getResourcePath()));
 
         int userSelection = fileChooser.showOpenDialog(SwingUtilities.getWindowAncestor(this));
 
@@ -231,6 +233,7 @@ public class ControlPanel extends JPanel {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select Dictionary File");
 
+        fileChooser.setCurrentDirectory(new File(editorManager.getResourcePath()));
         int userSelection = fileChooser.showOpenDialog(SwingUtilities.getWindowAncestor(this));
 
         if (userSelection != JFileChooser.APPROVE_OPTION) {
@@ -284,6 +287,7 @@ public class ControlPanel extends JPanel {
     private void chooseTranslateDictionaries() {
         JFileChooser sourceFileChooser = new JFileChooser();
         sourceFileChooser.setDialogTitle("Select Source Dictionary File");
+        sourceFileChooser.setCurrentDirectory(new File(editorManager.getResourcePath()));
 
         int sourceSelection = sourceFileChooser.showOpenDialog(SwingUtilities.getWindowAncestor(this));
 
@@ -295,6 +299,7 @@ public class ControlPanel extends JPanel {
 
         JFileChooser targetFileChooser = new JFileChooser();
         targetFileChooser.setDialogTitle("Select Target Dictionary File");
+        targetFileChooser.setCurrentDirectory(new File(editorManager.getResourcePath()));
 
         int targetSelection = targetFileChooser.showOpenDialog(SwingUtilities.getWindowAncestor(this));
 

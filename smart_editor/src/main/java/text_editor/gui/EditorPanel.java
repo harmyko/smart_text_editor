@@ -77,6 +77,12 @@ public class EditorPanel extends JPanel {
                     updateDisplay();
                 }
 
+                else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    e.consume();
+                    editorManager.getCurrentEditor().addText('\n');
+                    updateDisplay();
+                }
+
                 else if (e.getKeyCode() == KeyEvent.VK_LEFT ||
                         e.getKeyCode() == KeyEvent.VK_RIGHT ||
                         e.getKeyCode() == KeyEvent.VK_UP ||

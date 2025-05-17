@@ -17,7 +17,6 @@ public class EditorManager {
 
     public EditorManager() {
         initializeFactories();
-
         switchToSpellCheckEditor();
     }
 
@@ -27,7 +26,13 @@ public class EditorManager {
     }
 
     public void switchToSpellCheckEditor() {
+        String text = "";
+        if (getCurrentEditor() != null) {
+            text = getCurrentEditor().toString();
+        }
+
         currentEditor = spellCheckFactory.createEditor();
+        currentEditor.addText(text);
 
         if (currentEditor instanceof SpellCheckEditor) {
             ArrayList<String> words = readWordsFromFile(DEFAULT_SOURCE_DICTIONARY_PATH);
@@ -36,7 +41,13 @@ public class EditorManager {
     }
 
     public void switchToTranslateEditor() {
+        String text = "";
+        if (getCurrentEditor() != null) {
+            text = getCurrentEditor().toString();
+        }
+
         currentEditor = translateFactory.createEditor();
+        currentEditor.addText(text);
 
         if (currentEditor instanceof TranslateEditor) {
             ArrayList<String> sourceWords = readWordsFromFile(DEFAULT_SOURCE_DICTIONARY_PATH);
