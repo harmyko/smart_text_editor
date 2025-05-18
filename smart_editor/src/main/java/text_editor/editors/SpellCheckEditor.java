@@ -57,6 +57,13 @@ public class SpellCheckEditor
 				checkedString.append(word);
 				firstWordAdded = true;
 			}
+			else {
+				if (firstWordAdded) {
+					checkedString.append(" ");
+				}
+				checkedString.append("~").append(word).append("~");
+				firstWordAdded = true;
+			}
 		}
 
 		text = checkedString;
