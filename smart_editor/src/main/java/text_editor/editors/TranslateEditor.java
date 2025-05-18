@@ -44,19 +44,38 @@ public class TranslateEditor
 		}
 		return translationMap.get(sourceWord);
 	}
-	
+
 	public void transform() {
-	    StringBuilder translatedString = new StringBuilder();
-	    String[] words = text.toString().split("\\s+");
+		StringBuilder translatedString = new StringBuilder();
+		String[] words = text.toString().split("\\s+");
 
-	    for (int i = 0; i < words.length; i++) {
-	        translatedString.append(translateWord(words[i]));
-	        if (i < words.length - 1) {
-	            translatedString.append(" ");
-	        }
-	    }
+		for (int i = 0; i < words.length; i++) {
+			String word = words[i];
 
-	    text = translatedString;
+			String leadingPunct = "";
+			String trailingPunct = "";
+			String cleanWord = word;
+
+			while (!cleanWord.isEmpty() && !Character.isLetterOrDigit(cleanWord.charAt(0))) {
+				leadingPunct += cleanWord.charAt(0);
+				cleanWord = cleanWord.substring(1);
+			}
+
+			while (!cleanWord.isEmpty() && !Character.isLetterOrDigit(cleanWord.charAt(cleanWord.length() - 1))) {
+				trailingPunct = cleanWord.charAt(cleanWord.length() - 1) + trailingPunct;
+				cleanWord = cleanWord.substring(0, cleanWord.length() - 1);
+			}
+
+			String translatedWord = cleanWord.isEmpty() ? "" : translateWord(cleanWord.toLowerCase());
+
+			translatedString.append(leadingPunct).append(translatedWord).append(trailingPunct);
+
+			if (i < words.length - 1) {
+				translatedString.append(" ");
+			}
+		}
+
+		text = translatedString;
 	}
 
 	public void removeTranslation(String word) {

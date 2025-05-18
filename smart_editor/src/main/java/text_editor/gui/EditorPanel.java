@@ -69,10 +69,14 @@ public class EditorPanel extends JPanel {
 
                     if (e.isControlDown()) {
                         // Ctrl+Backspace -> remove word at caret
-                        editorManager.getCurrentEditor().removeWord();
+                        if (editorManager.getCurrentEditor().getCaretPosition() > 0) {
+                            editorManager.getCurrentEditor().removeWord();
+                        }
                     } else {
                         // Regular Backspace -> remove character before caret
-                        editorManager.getCurrentEditor().removeLastCharacter();
+                        if (editorManager.getCurrentEditor().getCaretPosition() > 0) {
+                            editorManager.getCurrentEditor().removeLastCharacter();
+                        }
                     }
                     updateDisplay();
                 }

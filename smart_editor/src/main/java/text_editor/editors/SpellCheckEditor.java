@@ -48,21 +48,38 @@ public class SpellCheckEditor
 		StringBuilder checkedString = new StringBuilder();
 		String[] words = text.toString().split("\\s+");
 
-		boolean firstWordAdded = false;
-		for (String word : words) {
-			if (checkWord(word)) {
-				if (firstWordAdded) {
-					checkedString.append(" ");
-				}
-				checkedString.append(word);
-				firstWordAdded = true;
+		for (int i = 0; i < words.length; i++) {
+			String word = words[i];
+
+			// Extract punctuation from the beginning and end
+			String leadingPunct = "";
+			String trailingPunct = "";
+			String cleanWord = word;
+
+			// Extract leading punctuation
+			while (!cleanWord.isEmpty() && !Character.isLetterOrDigit(cleanWord.charAt(0))) {
+				leadingPunct += cleanWord.charAt(0);
+				cleanWord = cleanWord.substring(1);
 			}
-			else {
-				if (firstWordAdded) {
-					checkedString.append(" ");
+
+			// Extract trailing punctuation
+			while (!cleanWord.isEmpty() && !Character.isLetterOrDigit(cleanWord.charAt(cleanWord.length() - 1))) {
+				trailingPunct = cleanWord.charAt(cleanWord.length() - 1) + trailingPunct;
+				cleanWord = cleanWord.substring(0, cleanWord.length() - 1);
+			}
+
+			if (!cleanWord.isEmpty()) {
+				if (checkWord(cleanWord)) {
+					checkedString.append(leadingPunct).append(cleanWord).append(trailingPunct);
+				} else {
+					checkedString.append(leadingPunct).append("~").append(cleanWord).append("~").append(trailingPunct);
 				}
-				checkedString.append("~").append(word).append("~");
-				firstWordAdded = true;
+			} else {
+				checkedString.append(word);
+			}
+
+			if (i < words.length - 1) {
+				checkedString.append(" ");
 			}
 		}
 
