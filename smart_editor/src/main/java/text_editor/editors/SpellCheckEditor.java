@@ -1,7 +1,7 @@
 package main.java.text_editor.editors;
 
-import main.java.text_editor.exceptions.InvalidWordException;
 import main.java.text_editor.interfaces.Transformable;
+import main.java.text_editor.prediction.WordPredictor;
 
 import java.io.Serializable;
 import java.util.*;
@@ -11,6 +11,7 @@ public class SpellCheckEditor
 		implements Transformable, Cloneable, Serializable {
 
 	private ArrayList<String> dictionary;
+	private WordPredictor predictor;
 
 	public SpellCheckEditor(ArrayList<String> words) {
 		super();
@@ -24,6 +25,7 @@ public class SpellCheckEditor
 
 	public void setDictionary(ArrayList<String> words) {
 		dictionary = words;
+		predictor = new WordPredictor(dictionary);
 	}
 
 	public ArrayList<String> getDictionary() {
@@ -84,6 +86,39 @@ public class SpellCheckEditor
 		}
 
 		text = checkedString;
+	}
+
+	public List<String> getPredictions(int maxSuggestions) {
+		String currentWord = getCurrentWord();
+		if (predictor != null && !currentWord.isEmpty()) {
+			return predictor.predictWords(currentWord, maxSuggestions);
+		}
+		return new ArrayList<>();
+	}
+
+	public String getCurrentWord() {
+		if (text.length() == 0 || caretPosition == 0) {
+			return "";
+		}
+
+		String textStr = text.toString();
+
+		int wordStart = caretPosition - 1;
+		while (wordStart >= 0 && Character.isLetterOrDigit(textStr.charAt(wordStart))) {
+			wordStart--;
+		}
+		wordStart++;
+
+		int wordEnd = caretPosition;
+		while (wordEnd < textStr.length() && Character.isLetterOrDigit(textStr.charAt(wordEnd))) {
+			wordEnd++;
+		}
+
+		if (wordStart < wordEnd && wordStart < caretPosition) {
+			return textStr.substring(wordStart, Math.min(caretPosition, wordEnd));
+		}
+
+		return "";
 	}
 
 	@Override
