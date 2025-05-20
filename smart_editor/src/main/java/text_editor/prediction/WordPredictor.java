@@ -1,5 +1,6 @@
 package main.java.text_editor.prediction;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -8,7 +9,8 @@ import java.util.*;
  *
  * @author Ugnius Teišerskis
  */
-public class WordPredictor {
+public class WordPredictor
+        implements Serializable {
 
     /** Set of words used for predictions, sorted case-insensitively */
     private final Set<String> vocabulary;
