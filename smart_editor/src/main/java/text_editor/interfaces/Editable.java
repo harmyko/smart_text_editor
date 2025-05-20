@@ -1,11 +1,22 @@
 package main.java.text_editor.interfaces;
 
-import java.io.Serializable;
+/**
+ * The Editable interface defines the basic text editing capabilities.
+ * Classes implementing this interface provide functionality for adding and removing text.
+ *
+ * @author Ugnius Teišerskis
+ */
+public interface Editable {
 
-public interface Editable extends Serializable {
+    /**
+     * Adds a single character to the text.
+     *
+     * @param character the character to add
+     */
     void addText(char character);
-    void addText(String string);
+
+    /**
+     * Removes the last character from the text.
+     */
     void removeLastCharacter();
-    void removeWord();
-    void removeWord(String word);
 }

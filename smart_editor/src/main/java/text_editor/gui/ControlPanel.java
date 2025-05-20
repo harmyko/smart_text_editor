@@ -8,17 +8,47 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 
-public class ControlPanel extends JPanel {
+/**
+ * The ControlPanel class represents the GUI component containing editor controls.
+ * It provides buttons and controls for transforming text, saving/loading editor state,
+ * switching between editor types, and selecting dictionaries.
+ *
+ * @author Ugnius Teišerskis
+ */
+public class ControlPanel
+        extends JPanel {
+
+    /** Button for transforming text according to the current editor type */
     private JButton transformButton;
+
+    /** Button for saving the current editor state */
     private JButton saveButton;
+
+    /** Button for loading a saved editor state */
     private JButton loadButton;
+
+    /** Button for choosing dictionaries for the current editor */
     private JButton chooseDictionaryButton;
+
+    /** Dropdown for selecting the type of editor to use */
     private JComboBox<String> editorTypeComboBox;
 
+    /** Manager for the editor instances */
     private EditorManager editorManager;
+
+    /** Panel displaying the editor content */
     private EditorPanel editorPanel;
+
+    /** Panel showing status information */
     private StatusPanel statusPanel;
 
+    /**
+     * Constructs a new ControlPanel with the specified components.
+     *
+     * @param editorManager the manager for editor instances
+     * @param editorPanel the panel displaying the editor content
+     * @param statusPanel the panel showing status information
+     */
     public ControlPanel(EditorManager editorManager, EditorPanel editorPanel, StatusPanel statusPanel) {
         this.editorManager = editorManager;
         this.editorPanel = editorPanel;
@@ -28,6 +58,9 @@ public class ControlPanel extends JPanel {
         createControls();
     }
 
+    /**
+     * Creates and initializes the control components like buttons and dropdowns.
+     */
     private void createControls() {
         String[] editorTypes = {"SpellCheck Editor", "Translate Editor"};
         editorTypeComboBox = new JComboBox<>(editorTypes);
@@ -62,6 +95,10 @@ public class ControlPanel extends JPanel {
         add(chooseDictionaryButton);
     }
 
+    /**
+     * Transforms the text in the current editor according to its transformation rules.
+     * This operation runs on a separate thread to avoid blocking the UI.
+     */
     private void transformText() {
         Thread transformThread = new Thread(() -> {
             SwingUtilities.invokeLater(() -> {
@@ -96,6 +133,10 @@ public class ControlPanel extends JPanel {
         transformThread.start();
     }
 
+    /**
+     * Saves the current editor state to a file selected by the user.
+     * This operation runs on a separate thread to avoid blocking the UI.
+     */
     private void saveEditorState() {
         final Editor editorToSave = editorManager.getCurrentEditor();
         final String editorType = editorTypeComboBox.getSelectedItem().toString();
@@ -156,6 +197,10 @@ public class ControlPanel extends JPanel {
         saveThread.start();
     }
 
+    /**
+     * Loads an editor state from a file selected by the user.
+     * This operation runs on a separate thread to avoid blocking the UI.
+     */
     private void loadEditorState() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Load Editor State");
@@ -219,6 +264,10 @@ public class ControlPanel extends JPanel {
         loadThread.start();
     }
 
+    /**
+     * Chooses the appropriate dictionary based on the current editor type.
+     * Delegates to specific dictionary chooser methods.
+     */
     private void chooseDictionary() {
         String selectedType = (String) editorTypeComboBox.getSelectedItem();
 
@@ -229,6 +278,10 @@ public class ControlPanel extends JPanel {
         }
     }
 
+    /**
+     * Prompts the user to select a spell checking dictionary file.
+     * This operation runs on a separate thread to avoid blocking the UI.
+     */
     private void chooseSpellCheckDictionary() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select Dictionary File");
@@ -284,6 +337,10 @@ public class ControlPanel extends JPanel {
         loadDictionaryThread.start();
     }
 
+    /**
+     * Prompts the user to select source and target dictionary files for translation.
+     * This operation runs on a separate thread to avoid blocking the UI.
+     */
     private void chooseTranslateDictionaries() {
         JFileChooser sourceFileChooser = new JFileChooser();
         sourceFileChooser.setDialogTitle("Select Source Dictionary File");

@@ -12,13 +12,35 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class EditorPanel extends JPanel {
+/**
+ * The EditorPanel class represents the GUI component displaying the editor content.
+ * It handles text display, user input, and word prediction features.
+ *
+ * @author Ugnius Teišerskis
+ */
+public class EditorPanel
+        extends JPanel {
+
+    /** Text area component for displaying and editing text */
     private JTextArea textArea;
+
+    /** Manager for the editor instances */
     private EditorManager editorManager;
+
+    /** Flag to prevent infinite update loops when updating from the editor */
     private boolean updatingFromEditor = false;
+
+    /** Popup menu for displaying word predictions */
     private JPopupMenu predictionPopup;
+
+    /** Timer for delaying word prediction display */
     private javax.swing.Timer predictionTimer;
 
+    /**
+     * Constructs a new EditorPanel with the specified editor manager.
+     *
+     * @param editorManager the manager for editor instances
+     */
     public EditorPanel(EditorManager editorManager) {
         this.editorManager = editorManager;
 
@@ -27,6 +49,9 @@ public class EditorPanel extends JPanel {
         setupPredictionPopup();
     }
 
+    /**
+     * Creates and configures the text area component.
+     */
     private void createTextArea() {
         textArea = new JTextArea();
         textArea.setMargin(new Insets(10, 15, 10, 15));
@@ -43,6 +68,9 @@ public class EditorPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Sets up the caret listener for tracking caret position changes.
+     */
     private void setupCaretListener() {
         textArea.addCaretListener(new CaretListener() {
             @Override
@@ -54,6 +82,9 @@ public class EditorPanel extends JPanel {
         });
     }
 
+    /**
+     * Sets up keyboard and mouse listeners for handling user input.
+     */
     private void setupKeyListeners() {
         textArea.addKeyListener(new KeyAdapter() {
             @Override
@@ -119,6 +150,9 @@ public class EditorPanel extends JPanel {
         });
     }
 
+    /**
+     * Sets up the word prediction popup and its timer.
+     */
     private void setupPredictionPopup() {
         predictionPopup = new JPopupMenu();
         predictionPopup.setFocusable(false);
@@ -127,6 +161,10 @@ public class EditorPanel extends JPanel {
         predictionTimer.setRepeats(false);
     }
 
+    /**
+     * Shows word predictions based on the current word being typed.
+     * The predictions are displayed in a popup menu near the caret position.
+     */
     private void showPredictions() {
         if (!(editorManager.getCurrentEditor() instanceof SpellCheckEditor)) {
             hidePredictions();
@@ -164,6 +202,11 @@ public class EditorPanel extends JPanel {
         }
     }
 
+    /**
+     * Inserts a selected prediction word, replacing the current word being typed.
+     *
+     * @param prediction the prediction word to insert
+     */
     private void insertPrediction(String prediction) {
         SpellCheckEditor spellEditor = (SpellCheckEditor) editorManager.getCurrentEditor();
         String currentWord = spellEditor.getCurrentWord();
@@ -175,12 +218,19 @@ public class EditorPanel extends JPanel {
         updateDisplay();
     }
 
+    /**
+     * Hides the prediction popup if it is visible.
+     */
     private void hidePredictions() {
         if (predictionPopup != null && predictionPopup.isVisible()) {
             predictionPopup.setVisible(false);
         }
     }
 
+    /**
+     * Updates the display to reflect the current state of the editor.
+     * This method synchronizes the text area content with the editor content.
+     */
     public void updateDisplay() {
         updatingFromEditor = true;
         String currentText = editorManager.getCurrentEditor().toString();
