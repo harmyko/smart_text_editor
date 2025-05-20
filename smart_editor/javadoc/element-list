@@ -1,0 +1,8 @@
+main.java.launcher
+main.java.text_editor.editors
+main.java.text_editor.exceptions
+main.java.text_editor.factory
+main.java.text_editor.gui
+main.java.text_editor.interfaces
+main.java.text_editor.prediction
+main.java.text_editor.serialization
