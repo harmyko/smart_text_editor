@@ -72,11 +72,7 @@ Programoje panaudoti šie projektavimo šablonai (design patterns):
 
 2. **Template Method** - naudojamas `Editor` abstrakčioje klasėje, kur bendras elgesys apibūdintas pagrindinėje klasėje, o specifiniai metodai (pvz., `transform()`) įgyvendinami paveldėtose klasėse.
 
-3. **Command Pattern** elementai - matomi programos valdymo panelėje, kur vartotojo veiksmai atskiriami nuo jų įgyvendinimo.
-
-4. **Prototype** - implementuojamas per `clone()` metodą `Editor` klasėje, leidžiantį kopijuoti redaktorių objektus.
-
-5. **Strategy** - panašūs elementai matomi taikant skirtingus teksto transformavimo algoritmus per bendrą `Transformable` sąsają.
+3. **Strategy** - panašūs elementai matomi taikant skirtingus teksto transformavimo algoritmus per bendrą `Transformable` sąsają.
 
 ## Plėtimo galimybės
 
