@@ -30,5 +30,5 @@ A modular text editor built step-by-step over the course of the semester. Each l
 
 #### **Lab #7** – *Implemented the Serializable interface in the Editor and designed a basic Graphical User Interface and made use of threads to handle different processes.*
 
-#### **Lab #8** – *work in progress...*
+#### **Lab #8** – *Generated a documentation and polished the project.*
 The course emphasizes object-oriented design, abstraction, encapsulation, inheritance, and polymorphism. The final project demonstrates a practical application of these principles through iterative development.
